@@ -1,0 +1,382 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>后台管理</title>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/main.css}"/>
+    <script type="text/javascript" th:src="@{~/farmer_manage/js/jquery-3.4.1.js}"></script>
+    <link th:href="@{~/farmer/css/myself.css}" rel='stylesheet' type='text/css' />
+</head>
+<body>
+<div th:replace="~{seller_manage/common/head :: head}"></div>
+
+<div class="container clearfix">
+    <div th:replace="~{seller_manage/common/left :: left}"></div>
+    <!--/sidebar-->
+    <div class="main-wrap">
+
+        <div class="crumb-wrap">
+            <div class="crumb-list"><i class="icon-font">
+            </i><a th:href="@{~/seller_manage/index.html}">首页</a>
+                <span class="crumb-step">&gt;</span>
+                <a class="crumb-name" href="#">卖家操作</a>
+                <span class="crumb-step">&gt;</span>
+                <span>发布产品</span>
+            </div>
+        </div>
+        <div class="result-self" >
+            <div class="result-wrap">
+                <div class="result-content">
+
+                    <form action="#"  onsubmit="return checkSubmit1()"  method="post" id="myform1" name="myform1" enctype="multipart/form-data" th:if="${session.judge==null}">
+                        <table class="insert-tab" width="100%">
+                            <tbody>
+                            <tr>
+                                <th width="120"><i class="require-red">*</i>产品名：</th>
+                                <td>
+                                    <input class="common-text required"   size="50" value="" type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><i class="require-red">*</i>产品价格：</th>
+                                <td>
+                                    <input class="common-text required"   size="50" value="" type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><i class="require-red">*</i>产品库存：</th>
+                                <td>
+                                    <input class="common-text" name="product_stock" size="50" value="" type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><i class="require-red">*</i>产品类型：</th>
+                                <td>
+                                    <input class="common-text" name="product_classification" size="50" value="" type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><i class="require-red">*</i>产品产地：</th>
+                                <td>
+                                    <input class="common-text required"  size="50" value="" type="text">
+                                </td>
+                            </tr>
+
+
+                            <tr style="height: 200px">
+                                <th><i class="require-red">*</i>缩略图：</th>
+                                <img src="" id="preview1" style="opacity:0;width: 200px;height: 140px;position: absolute;top: 150px;left: 250px">
+                                <td>
+                                    <input type="file" name="file"  onChange="showPic(this)" style="width: 75px;position: absolute;top: 300px;left: 300px"/>
+                                    <!--<input name="smallimg" id="" type="file">-->
+                                    <!--<input type="submit" onclick="submitForm('/jscss/admin/design/upload')" value="上传图片"/>-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>产品描述：</th>
+                                <td><textarea  class="common-textarea" cols="30" style="width: 98%;" rows="10"></textarea></td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td>
+                                    <input class="btn btn-primary btn6 mr10" value="提交" type="submit">
+                                    <input class="btn btn6" onClick="history.go(-1)" value="返回" type="button">
+                                </td>
+                            </tr>
+                            </tbody></table>
+                    </form>
+
+
+
+                    <form action="/seller_manage/uploadproduct" onsubmit="return checkSubmit2()" method="post" id="myform" name="myform" enctype="multipart/form-data" th:if="${session.judge!=null}">
+                        <table class="insert-tab" width="100%">
+                            <tbody>
+                            <input type="hidden" name="id" th:value="${session.judge.getId()}">
+
+                            <tr>
+                                <th width="120"><i class="require-red">*</i>产品名：</th>
+                                <td>
+                                    <input class="common-text required" id="product_name" name="product_name" size="50" value="" type="text" onblur="checkName()">
+                                </td>
+
+                                <div  id="inputproduct_name_prompt" style="color: red;font-weight: bold;position: absolute;left:800px;top:25px">
+
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><i class="require-red">*</i>产品价格：</th>
+                                <td>
+                                    <input class="common-text required" id="product_price" name="product_price" size="50" value="" type="text" onblur="checkPrice()">
+                                </td>
+                                <div  id="inputproduct_price_prompt" style="color: red;font-weight: bold;position: absolute;left:800px;top:65px">
+
+                                </div>
+
+                            </tr>
+
+                            <tr>
+                                <th width="120"><i class="require-red">*</i>产品库存：</th>
+                                <td>
+                                    <input class="common-text required" id="product_stock" name="product_stock" size="50" value="" type="text" onblur="checkStock()">
+                                </td>
+
+                                <div  id="inputproduct_stock_prompt" style="color: red;font-weight: bold;position: absolute;left:800px;top:110px">
+
+                                </div>
+                            </tr>
+                            <tr>
+                                <th width="120"><i class="require-red">*</i>产品类型：</th>
+                                <td>
+                                    <input class="common-text required" id="product_classification" name="product_classification" size="50" value="" type="text" onblur="checkClassification()">
+                                </td>
+
+                                <div  id="inputproduct_classification_prompt" style="color: red;font-weight: bold;position: absolute;left:800px;top:150px">
+
+                                </div>
+                            </tr>
+                            <tr>
+                                <th><i class="require-red">*</i>产品产地：</th>
+                                <td>
+                                    <input class="common-text required" id="product_place" name="product_place" size="50" value="" type="text" onblur="checkPlace()">
+                                </td>
+                                <div  id="inputproduct_place_prompt" style="color: red;font-weight: bold;position: absolute;left:800px;top:190px">
+
+                                </div>
+
+                            </tr>
+
+
+
+                            <tr style="height: 200px">
+                                <th><i class="require-red">*</i>缩略图：</th>
+                                <img src="" id="preview" style="opacity:0;width: 200px;height: 140px;position: absolute;top: 235px;left: 250px">
+                                <td>
+                                    <input type="file" name="file" id="filename" onChange="showPic(this)" style="width: 75px;position: absolute;top: 385px;left: 300px"/>
+                                    <!--<input name="smallimg" id="" type="file">-->
+                                    <!--<input type="submit" onclick="submitForm('/jscss/admin/design/upload')" value="上传图片"/>-->
+                                </td>
+                                <div  id="inputfile_prompt" style="color: red;font-weight: bold;position: absolute;left:800px;top:250px">
+
+                                </div>
+                            </tr>
+                            <tr>
+                                <th>产品描述：</th>
+                                <td><textarea name="product_description" class="common-textarea" id="product_description" cols="30" style="width: 98%;" rows="10" onblur="checkDescription()"></textarea></td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td>
+
+                                    <div  id="inputproduct_description_prompt" style="color: red;font-weight: bold">
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td>
+                                    <input class="btn btn-primary btn6 mr10" value="提交" type="submit">
+                                    <input class="btn btn6" onClick="history.go(-1)" value="返回" type="button">
+                                </td>
+                            </tr>
+
+                            </tbody></table>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--/main-->
+</div>
+
+
+<script>
+    function checkName() {
+        var my= document.getElementById ("product_name");
+        var divID= document.getElementById ("inputproduct_name_prompt");
+        divID.innerHTML="";
+        if(my.value=="") {
+            divID.innerHTML = "产品名不能为空";
+            return false;
+        }else if(my.length>50){
+            divID.innerHTML = "产品名不能超过50个字符";
+            return false;
+        }
+        return true
+    }
+    function checkPrice() {
+        var my= document.getElementById ("product_price");
+        var divID= document.getElementById ("inputproduct_price_prompt");
+        divID.innerHTML="";
+        var product_price=$("#product_price").val();
+        var reg=/^[a-zA-Z0-9]{0,20}$/;
+        if (product_price==""){
+            divID.innerHTML = "产品价格不能为空";
+            return false;
+        }else{
+            if(reg.test(product_price)==false){
+                divID.innerHTML="产品价格格式不正确";
+                return false;
+            }
+        }
+        return true
+    }
+
+    function checkStock() {
+        var my= document.getElementById ("product_stock");
+        var divID= document.getElementById ("inputproduct_stock_prompt");
+        divID.innerHTML="";
+        var product_stock=$("#product_stock").val();
+        var reg=/^[a-zA-Z0-9]{0,20}$/;
+        if (product_stock==""){
+            divID.innerHTML = "产品库存不能为空";
+            return false;
+        }else{
+            if(parseInt(product_stock)<100){
+                divID.innerHTML = "产品库存不能小于100";
+                return false;
+            }
+            else if(reg.test(product_stock)==false){
+                divID.innerHTML="产品库存格式不正确";
+                return false;
+            }
+        }
+        return true
+    }
+
+    function checkClassification() {
+        var my= document.getElementById ("product_classification");
+        var divID= document.getElementById ("inputproduct_classification_prompt");
+        divID.innerHTML="";
+        if(my.value=="") {
+            divID.innerHTML = "产品类型不能为空";
+            return false;
+        }else if(my.length>50){
+            divID.innerHTML = "产品类型不能超过50个字符";
+            return false;
+        }
+        return true
+    }
+    function checkPlace() {
+        var my= document.getElementById ("product_place");
+        var divID= document.getElementById ("inputproduct_place_prompt");
+        divID.innerHTML="";
+        if(my.value=="") {
+            divID.innerHTML = "产品产地不能为空";
+            return false;
+        }else if(my.length>50){
+            divID.innerHTML = "产品产地不能超过50个字符";
+            return false;
+        }
+        return true
+    }
+
+
+
+    function checkDescription() {
+        var my= document.getElementById ("product_description");
+        var divID= document.getElementById ("inputproduct_description_prompt");
+        divID.innerHTML="";
+        if(my.value=="") {
+            divID.innerHTML = "产品描述不能为空";
+            return false;
+        }
+        return true
+    }
+    function checkPreview() {
+        var  preview = $("#filename").val();
+        var divID= document.getElementById ("inputfile_prompt");
+        if (preview == "") {
+            divID.innerHTML = "图片不能为空";
+            return false;
+        } else {
+            divID.innerHTML = "";
+            var index= preview.indexOf(".");
+            preview=preview.substring(index);
+            if(preview!=".bmp"&&preview!=".png"&&preview!=".gif"&&preview!=".jpg"&&preview!=".jpeg") {  //根据后缀，判断是否符合图片格式
+                divID.innerHTML = "不是指定图片格式,重新选择";
+                document.getElementById('filename').value = "";  // 不符合，就清除，重新选择
+            }
+            return true;
+        }
+
+    }
+    function checkAll() {
+        var a=checkName();
+        var b=checkPrice();
+        var c=checkStock();
+        var d=checkClassification();
+        var e=checkPlace() ;
+        var f = checkDescription();
+        var g=checkPreview();
+
+        return a&&b&&c&&d&&e&&f&&g;
+    }
+
+
+    function checkSubmit2(){
+        if (checkAll()==true){
+            alert("提交成功")
+            return true;
+        }else {
+            alert("提交失败")
+            return false;
+        }
+    }
+
+
+    function checkSubmit1(){
+        alert("请先登入");
+        return false;
+    }
+
+
+    function showPic(obj) {
+        var  preview = $("#filename").val();
+        var divID= document.getElementById ("inputfile_prompt");
+
+        var fileUrl = getObjectURL(obj.files[0]);
+        if (fileUrl != null) {
+            document.getElementById("preview").src = fileUrl;      // 图片预览
+            document.getElementById("preview").style = "opacity:1;width: 200px;height: 140px;position: absolute;top: 235px;left: 250px";
+
+
+            divID.innerHTML = "";
+            var index= preview.indexOf(".");
+            preview=preview.substring(index);
+            if(preview!=".bmp"&&preview!=".png"&&preview!=".gif"&&preview!=".jpg"&&preview!=".jpeg") {  //根据后缀，判断是否符合图片格式
+                divID.innerHTML = "不是指定图片格式,重新选择";
+                document.getElementById('filename').value = "";  // 不符合，就清除，重新选择
+            }
+
+        }
+
+
+
+
+
+    }
+
+    //建立一个可存取到该file的url
+    function getObjectURL(file) {
+        var url = null;
+        // 下面函数执行的效果是一样的，只是需要针对不同的浏览器执行不同的 js 函数而已
+        if (window.createObjectURL != undefined) {   // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) {        // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) {  // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url;
+
+    }
+</script>
+
+
+</body>
+</html>

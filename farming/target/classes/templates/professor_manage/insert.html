@@ -1,0 +1,304 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>后台管理</title>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/main.css}"/>
+    <script type="text/javascript" th:src="@{~/farmer_manage/js/jquery-3.4.1.js}"></script>
+    <link th:href="@{~/farmer/css/myself.css}" rel='stylesheet' type='text/css' />
+</head>
+<body>
+<div th:replace="~{professor_manage/common/head :: head}"></div>
+
+<div class="container clearfix">
+    <div th:replace="~{professor_manage/common/left :: left}"></div>
+    <!--/sidebar-->
+    <div class="main-wrap">
+
+        <div class="crumb-wrap">
+            <div class="crumb-list"><i class="icon-font">
+            </i><a th:href="@{~/professor_manage/index.html}">首页</a>
+                <span class="crumb-step">&gt;</span>
+                <a class="crumb-name" href="#">专家操作</a>
+                <span class="crumb-step">&gt;</span>
+                <span>发布文章</span>
+            </div>
+        </div>
+        <div class="result-self" >
+            <div class="result-wrap">
+            <div class="result-content">
+
+                <form action="#"  onsubmit="return checkSubmit1()"  method="post" id="myform1" name="myform1" enctype="multipart/form-data" th:if="${session.judge==null}">
+                    <table class="insert-tab" width="100%">
+                        <tbody><tr>
+                            <th width="120"><i class="require-red">*</i>来源：</th>
+                            <td>
+                                <input class="common-text required" id="source1" name="source" size="50" value="" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><i class="require-red">*</i>标题：</th>
+                            <td>
+                                <input class="common-text required" id="title1" name="title" size="50" value="" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><i class="require-red">*</i>作者：</th>
+                            <td><input class="common-text" name="author1" size="50" value="" type="text"></td>
+                        </tr>
+                        <tr style="height: 200px">
+                            <th><i class="require-red">*</i>缩略图：</th>
+                            <img src="" id="preview1" style="opacity:0;width: 200px;height: 140px;position: absolute;top: 150px;left: 250px">
+                            <td>
+                                <input type="file" name="file" id="filename1" onChange="showPic(this)" style="width: 75px;position: absolute;top: 300px;left: 300px"/>
+                                <!--<input name="smallimg" id="" type="file">-->
+                                <!--<input type="submit" onclick="submitForm('/jscss/admin/design/upload')" value="上传图片"/>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>内容：</th>
+                            <td><textarea name="content" class="common-textarea" id="content1" cols="30" style="width: 98%;" rows="10"></textarea></td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <input class="btn btn-primary btn6 mr10" value="提交" type="submit">
+                                <input class="btn btn6" onClick="history.go(-1)" value="返回" type="button">
+                            </td>
+                        </tr>
+                        </tbody></table>
+                </form>
+
+
+
+                <form action="/professor_manage/uploadarticle" onsubmit="return checkSubmit2()" method="post" id="myform" name="myform" enctype="multipart/form-data" th:if="${session.judge!=null}">
+                    <table class="insert-tab" width="100%">
+                        <tbody><tr>
+                            <th width="120"><i class="require-red">*</i>来源：</th>
+                            <td>
+                                <input class="common-text required" id="source" name="source" size="50" value="" type="text" onblur="checkSource()">
+                            </td>
+
+                            <div  id="inputsource_prompt" style="color: red;font-weight: bold;position: absolute;left:800px;top:25px">
+
+                            </div>
+                        </tr>
+                        <tr>
+                            <th><i class="require-red">*</i>标题：</th>
+                            <td>
+                                <input class="common-text required" id="title" name="title" size="50" value="" type="text" onblur="checkTitle()">
+                            </td>
+                            <div  id="inputtitle_prompt" style="color: red;font-weight: bold;position: absolute;left:800px;top:65px">
+
+                            </div>
+
+                        </tr>
+                        <tr>
+                            <th><i class="require-red">*</i>作者：</th>
+                            <td><input class="common-text" id="author" name="author" size="50" value="" type="text" onblur="checkAuthor()"></td>
+                            <input  name="authorid"  th:value="${session.judge.getId()}" type="hidden" >
+                            <div  id="inputauthor_prompt" style="color: red;font-weight: bold;position: absolute;left:800px;top:110px">
+
+                            </div>
+                        </tr>
+                        <tr style="height: 200px">
+                            <th><i class="require-red">*</i>缩略图：</th>
+                            <img src="" id="preview" style="opacity:0;width: 200px;height: 140px;position: absolute;top: 150px;left: 250px">
+                            <td>
+                                <input type="file" name="file" id="filename" onChange="showPic(this)" style="width: 75px;position: absolute;top: 300px;left: 300px"/>
+                                <!--<input name="smallimg" id="" type="file">-->
+                                <!--<input type="submit" onclick="submitForm('/jscss/admin/design/upload')" value="上传图片"/>-->
+                            </td>
+                            <div  id="inputfile_prompt" style="color: red;font-weight: bold;position: absolute;left:800px;top:230px">
+
+                            </div>
+                        </tr>
+                        <tr>
+                            <th>内容：</th>
+                            <td><textarea name="content" class="common-textarea" id="content" cols="30" style="width: 98%;" rows="10" onblur="checkContent()"></textarea></td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+
+                                <div  id="inputcontent_prompt" style="color: red;font-weight: bold">
+
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <input class="btn btn-primary btn6 mr10" value="提交" type="submit">
+                                <input class="btn btn6" onClick="history.go(-1)" value="返回" type="button">
+                            </td>
+                        </tr>
+
+                        </tbody></table>
+                </form>
+
+
+            </div>
+        </div>
+        </div>
+
+    </div>
+    <!--/main-->
+</div>
+
+
+<script>
+    function checkSource() {
+        var my= document.getElementById ("source");
+        var divID= document.getElementById ("inputsource_prompt");
+        divID.innerHTML="";
+        if(my.value=="") {
+            divID.innerHTML = "来源不能为空";
+            return false;
+        }else if(my.length>50){
+            divID.innerHTML = "来源不能超过50个字符";
+            return false;
+        }
+        return true
+    }
+    function checkTitle() {
+        var my= document.getElementById ("title");
+        var divID= document.getElementById ("inputtitle_prompt");
+        divID.innerHTML="";
+        if(my.value=="") {
+            divID.innerHTML = "标题不能为空";
+            return false;
+        }else if(my.length>50){
+            divID.innerHTML = "标题不能超过50个字符";
+            return false;
+        }
+        return true
+    }
+    function checkAuthor() {
+        var my= document.getElementById ("author");
+        var divID= document.getElementById ("inputauthor_prompt");
+        divID.innerHTML="";
+        if(my.value=="") {
+            divID.innerHTML = "作者不能为空";
+            return false;
+        }else if(my.length>50){
+            divID.innerHTML = "作者不能超过50个字符";
+            return false;
+        }
+        return true
+    }
+    function checkContent() {
+        var my= document.getElementById ("content");
+        var divID= document.getElementById ("inputcontent_prompt");
+        divID.innerHTML="";
+        if(my.value=="") {
+            divID.innerHTML = "内容不能为空";
+            return false;
+        }
+        return true
+    }
+    function checkPreview() {
+        var  preview = $("#filename").val();
+        var divID= document.getElementById ("inputfile_prompt");
+       if (preview == "") {
+           divID.innerHTML = "图片不能为空";
+            return false;
+        } else {
+           divID.innerHTML = "";
+           var index= preview.indexOf(".");
+           preview=preview.substring(index);
+           if(preview!=".bmp"&&preview!=".png"&&preview!=".gif"&&preview!=".jpg"&&preview!=".jpeg") {  //根据后缀，判断是否符合图片格式
+               divID.innerHTML = "不是指定图片格式,重新选择";
+               document.getElementById('filename').value = "";  // 不符合，就清除，重新选择
+           }
+            return true;
+        }
+
+    }
+    function checkAll() {
+        var a=checkSource();
+        var b=checkTitle();
+        var c=checkAuthor();
+        var d=checkContent();
+        var e=checkPreview() ;
+        return a&&b&&c&&d&&e;
+    }
+
+
+    function checkSubmit2(){
+        if (checkAll()==true){
+            alert("提交成功")
+           return true;
+        }else {
+            alert("提交失败")
+            return false;
+        }
+        /*var message=$("#message").val();
+        if (message==null||message==""){
+            alert("请输入您的评论")
+        }else {
+            if (message.length>=200){
+                alert("很抱歉，评论不能超过200个字符");
+            }else {
+                var name = $("#getUserName").text();
+                var articleid=$("#getArticleid").val();
+                alert(articleid+message+name)
+                submitcomment(articleid,message,name);
+            }
+
+        }*/
+    }
+
+
+    function checkSubmit1(){
+        alert("请先登入");
+        return false;
+    }
+
+
+    function showPic(obj) {
+        var  preview = $("#filename").val();
+        var divID= document.getElementById ("inputfile_prompt");
+
+        var fileUrl = getObjectURL(obj.files[0]);
+        if (fileUrl != null) {
+            document.getElementById("preview").src = fileUrl;      // 图片预览
+            document.getElementById("preview").style = "opacity:1;width: 200px;height: 140px;position: absolute;top: 150px;left: 250px";
+
+
+            divID.innerHTML = "";
+            var index= preview.indexOf(".");
+            preview=preview.substring(index);
+            if(preview!=".bmp"&&preview!=".png"&&preview!=".gif"&&preview!=".jpg"&&preview!=".jpeg") {  //根据后缀，判断是否符合图片格式
+                divID.innerHTML = "不是指定图片格式,重新选择";
+                document.getElementById('filename').value = "";  // 不符合，就清除，重新选择
+            }
+
+        }
+
+
+
+
+
+    }
+
+    //建立一个可存取到该file的url
+    function getObjectURL(file) {
+        var url = null;
+        // 下面函数执行的效果是一样的，只是需要针对不同的浏览器执行不同的 js 函数而已
+        if (window.createObjectURL != undefined) {   // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) {        // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) {  // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url;
+
+    }
+</script>
+
+
+</body>
+</html>

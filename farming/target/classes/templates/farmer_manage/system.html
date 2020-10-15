@@ -1,0 +1,433 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>个人中心</title>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/main.css}"/>
+    <script type="text/javascript" th:src="@{~/farmer_manage/js/jquery-3.4.1.js}"></script>
+    <link th:href="@{~/farmer/css/myself.css}" rel='stylesheet' type='text/css' />
+</head>
+
+
+
+<script>
+
+    function updateUserByID(name,tel,email,address,userid) {
+        $.ajax({
+            url: "/user/updateUserById",
+            type: "POST",
+            data: {
+                "name":name,
+                "tel":tel,
+                "email":email,
+                "address":address,
+                "id":userid
+            },
+            dataType: "json",
+            success: function (data) {
+                alert(data)
+                window.location.reload();
+
+
+            }
+        })
+    }
+
+     function updateUserPassWord(oldpass,newpass,userid) {
+        $.ajax({
+            url: "/user/updateUserPassWordById",
+            type: "POST",
+            data: {
+                "oldpass":oldpass,
+                "newpass":newpass,
+                "id":userid
+            },
+            dataType: "json",
+            success: function (data) {
+                alert(data)
+                window.location.reload();
+
+            }
+        })
+    }
+
+</script>
+
+
+
+<body>
+<div th:replace="~{farmer_manage/common/head :: head}"></div>
+
+<div class="container clearfix">
+    <div th:replace="~{farmer_manage/common/left :: left}"></div>
+    <!--/sidebar-->
+    <div class="main-wrap">
+        <div class="crumb-wrap">
+            <div class="crumb-list"><i class="icon-font">
+            </i><a th:href="@{~/farmer_manage/index.html}">首页</a><span class="crumb-step">&gt;
+            </span><span class="crumb-name">信息设置</span>
+            </div>
+        </div>
+        <div class="result-self" >
+            <div class="result-wrap">
+            <form action="#" method="post" id="myform" name="myform">
+                <div class="config-items">
+                    <div class="config-title">
+                        <h1><i class="icon-font">&#xe00a;</i>个人设置</h1>
+                    </div>
+                    <div class="result-content">
+                        <table width="100%" class="insert-tab">
+                            <tbody th:if="${session.judge}!=null">
+                                <tr>
+                                    <input th:value="${session.judge.getId()}" id="userid" type="hidden">
+                                    <input th:value="${session.judge.getStatus()}" id="status" type="hidden">
+                                    <th width="15%"><i class="require-red">*</i>职业：</th>
+                                    <td><input type="text"  value="" size="50" id="profession" class="common-text" readonly></td>
+                                </tr>
+                                <tr>
+                                    <th width="15%"><i class="require-red">*</i>用户名：</th>
+                                    <td><input type="text"  th:value="${session.judge.getName()}" size="50" id="inputname" class="common-text" onblur="checkName()"></td>
+                                    <td id="inputname_prompt" style="color: red;font-weight: bold;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>电话：</th>
+                                    <td><input type="text"  th:value="${session.judge.getTelephone()}" size="50" id="inputtel" class="common-text" onblur="checkTel()"></td>
+                                    <td  id="inputtel_prompt" style="color: red;font-weight: bold;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>邮箱：</th>
+                                    <td><input type="text"  th:value="${session.judge.getEmail()}" size="50" id="inputemail" class="common-text" onblur="checkEmail()"></td>
+                                    <td  id="inputemail_prompt" style="color: red;font-weight: bold;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>地址：</th>
+                                    <td><input type="text"  th:value="${session.judge.getAddress()}" size="50" id="inputaddress" class="common-text" onblur="checkAddress()"></td>
+                                    <td  id="inputaddress_prompt" style="color: red;font-weight: bold;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td>
+                                        <input type="button" value="提交" onclick="updateUser1()" class="btn btn-primary btn6 mr10">
+                                        <input type="button" value="返回" onClick="history.go(-1)" class="btn btn6">
+                                    </td>
+                                </tr>
+                            </tbody>
+
+
+
+                            <tbody th:if="${session.judge}==null">
+                                <tr>
+                                    <th width="15%"><i class="require-red">*</i>职业：</th>
+                                    <td><input type="text"   size="50" name="status" class="common-text"></td>
+                                </tr>
+                                <tr>
+                                    <th width="15%"><i class="require-red">*</i>用户名：</th>
+                                    <td><input type="text"   size="50" name="name" class="common-text"></td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>电话：</th>
+                                    <td><input type="text"   size="50" name="tel" class="common-text"></td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>邮箱：</th>
+                                    <td><input type="text"   size="50" name="email" class="common-text"></td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td>
+                                        <input type="button" value="提交" onclick="updateUser2()" class="btn btn-primary btn6 mr10">
+                                        <input type="button" value="返回" onClick="history.go(-1)" class="btn btn6">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+
+
+
+            <div class="result-wrap">
+                <form action="#" method="post" id="myform1" name="myform">
+                    <div class="config-items">
+                        <div class="config-title">
+                            <h1><i class="icon-font">&#xe00a;</i>密码设置</h1>
+                        </div>
+                        <div class="result-content">
+                            <table width="100%" class="insert-tab">
+                                <tbody th:if="${session.judge}!=null">
+                                <tr>
+                                    <th width="15%"><i class="require-red">*</i>旧密码：</th>
+                                    <td><input type="password"  value="" size="50" id="inputoldpass" class="common-text" onblur="checkOldPass()"></td>
+                                    <td id="inputoldpass_prompt" style="color: red;font-weight: bold;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>新密码：</th>
+                                    <td><input type="password"  value="" size="50" id="inputnewpass" class="common-text" onblur="checkNewPass()"></td>
+                                    <td  id="inputnewpass_prompt" style="color: red;font-weight: bold;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>确认新密码：</th>
+                                    <td><input type="password"  value="" size="50" id="inputrepass" class="common-text" onblur="checkRePass()"></td>
+                                    <td  id="inputrepass_prompt" style="color: red;font-weight: bold;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td>
+                                        <input type="button" value="提交" onclick="updateUserPass()" class="btn btn-primary btn6 mr10">
+                                        <input type="button" value="返回" onClick="history.go(-1)" class="btn btn6">
+                                    </td>
+                                </tr>
+                                </tbody>
+
+
+                                <tbody th:if="${session.judge}==null">
+                                <tr>
+                                    <th width="15%"><i class="require-red">*</i>旧密码：</th>
+                                    <td><input type="password"  value="" size="50"  class="common-text" onblur="checkOldPass()"></td>
+                                    <td  style="color: red;font-weight: bold;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>新密码：</th>
+                                    <td><input type="password"  value="" size="50"  class="common-text" onblur="checkNewPass()"></td>
+                                    <td  style="color: red;font-weight: bold;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>确认新密码：</th>
+                                    <td><input type="password"  value="" size="50"  class="common-text" onblur="checkRePass()"></td>
+                                    <td   style="color: red;font-weight: bold;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td>
+                                        <input type="button" value="提交" onclick="updateUser2()" class="btn btn-primary btn6 mr10">
+                                        <input type="button" value="返回" onClick="history.go(-1)" class="btn btn6">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--/main-->
+</div>
+
+<script>
+    $(function(){
+        method();
+    })
+
+    function method() {
+        var status=$("#status").val();
+        if (status==1){
+            var profession=$("#profession").val("农民");
+        }else if (status==2){
+            var profession=$("#profession").val("卖家");
+        }else if(status==3){
+            var profession=$("#profession").val("专家");
+        }
+
+
+    }
+
+   /* function updateUser1() {
+        var inputname=$("#inputname").val();
+        var inputtel=$("#tel").val();
+        var inputemail=$("#email").val();
+        alert(name+tel+email)
+    }*/
+    function updateUser2() {
+        alert("请先登入")
+    }
+
+    function checkName(){
+
+        var my= document.getElementById ("inputname");
+        var divID= document.getElementById ("inputname_prompt");
+        divID.innerHTML="";
+        var name = $("#inputname").val();
+        var reg=/^[a-zA-Z0-9]{3,15}$/;
+        if (name==""){
+            divID.innerHTML = "用户名名不能为空";
+            return false;
+        }else{
+            if (reg.test(name) == false) {
+                divID.innerHTML = "用户名格式不正确";
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function checkTel(){
+
+        var my= document.getElementById ("inputtel");
+        var divID= document.getElementById ("inputtel_prompt");
+        divID.innerHTML="";
+        var tel = $("#inputtel").val();
+        var reg = /^1\d{10}$/;
+        if (tel==""){
+            divID.innerHTML = "电话号码不能为空";
+            return false;
+        }else{
+            if (reg.test(tel) == false) {
+                divID.innerHTML = "电话号码格式不正确";
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    function checkEmail(){
+
+        var my= document.getElementById ("inputemail");
+        var divID= document.getElementById ("inputemail_prompt");
+        divID.innerHTML="";
+        var email = $("#inputemail").val();
+        var reg = /^\w+@\w+(\.[a-zA-Z]{2,3}){1,2}$/;
+        if (email==""){
+            divID.innerHTML = "邮箱不能为空";
+            return false;
+        }else{
+            if (reg.test(email) == false) {
+                divID.innerHTML = "邮箱格式不正确";
+                return false;
+            }
+        }
+
+        return true;
+    }
+    function checkAddress(){
+
+        var my= document.getElementById ("inputaddress");
+        var divID= document.getElementById ("inputaddress_prompt");
+        divID.innerHTML="";
+        var address = $("#inputaddress").val();
+
+        if (address==""){
+            divID.innerHTML = "地址不能为空";
+            return false;
+        }else {
+
+            return true;
+        }
+
+    }
+    function checkAll(){
+        var a=checkName();
+        var b=checkTel();
+        var c=checkEmail();
+        var d=checkAddress();
+        return a&&b&&c&&d;
+    }
+
+    function updateUser1(){
+        var userid=$("#userid").val();
+        if (checkAll()==true){
+            var name=$("#inputname").val();
+            var tel = $("#inputtel").val();
+            var email = $("#inputemail").val();
+            var address = $("#inputaddress").val();
+            var userid = $("#userid").val();
+           /* console.log(userid+name+address+"----"+email+"----"+tel);*/
+            updateUserByID(name,tel,email,address,userid);
+        }else {
+            alert("提交失败");
+            return false;
+        }
+    }
+
+
+    function checkOldPass(){
+
+        var my= document.getElementById ("inputoldpass");
+        var divID= document.getElementById ("inputoldpass_prompt");
+        divID.innerHTML="";
+        var oldpass=$("#inputoldpass").val();
+        var reg=/^[a-zA-Z0-9]{5,11}$/;
+        if(reg.test(oldpass)==false){
+            divID.innerHTML="密码格式不正确";
+            return false;
+        }
+        return true;
+    }
+    function checkNewPass(){
+
+        var my= document.getElementById ("inputnewpass");
+        var divID= document.getElementById ("inputnewpass_prompt");
+        divID.innerHTML="";
+        var newpass=$("#inputnewpass").val();
+        var reg=/^[a-zA-Z0-9]{5,11}$/;
+        if(reg.test(newpass)==false){
+            divID.innerHTML="密码格式不正确";
+            return false;
+        }
+        return true;
+    }
+    function checkRePass(){
+        var newpass=$("#inputnewpass").val();
+        var repass=$("#inputrepass").val();
+        if (newpass==repass){
+            return true;
+        }else {
+            var divID= document.getElementById ("inputrepass_prompt");
+            divID.innerHTML="两次密码不一致";
+            return false
+        }
+    }
+
+    function checkAllPass(){
+        var a=checkOldPass();
+        var b=checkNewPass();
+        var c=checkRePass();
+        return a&&b&&c;
+    }
+
+    function updateUserPass(){
+        var userid=$("#userid").val();
+        if (checkAllPass()==true){
+            var oldpass=$("#inputoldpass").val();
+            var newpass=$("#inputnewpass").val();
+            console.log(oldpass+"----"+newpass+"----"+userid);
+            updateUserPassWord(oldpass,newpass,userid);
+        }else {
+            alert("提交失败");
+            return false;
+        }
+    }
+
+</script>
+
+</body>
+</html>

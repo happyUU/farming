@@ -1,0 +1,129 @@
+<!Doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>后台管理</title>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/main.css}"/>
+    <script type="text/javascript" th:src="@{~/farmer_manage/js/jquery-3.4.1.js}"></script>
+    <link th:href="@{~/farmer/css/myself.css}" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" type="text/css" th:href="@{~/front/css/public.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{~/front/css/proList.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{~/front/css/myorder.css}"/>
+</head>
+<body>
+<div th:replace="~{professor_manage/common/head :: head}"></div>
+
+<div class="container clearfix">
+    <div th:replace="~{professor_manage/common/left :: left}"></div>
+    <!--/sidebar-->
+    <div class="main-wrap">
+
+        <div class="crumb-wrap">
+            <div class="crumb-list"><i class="icon-font">
+            </i><a th:href="@{~/professor_manage/index.html}">首页</a>
+                <span class="crumb-step">&gt;</span>
+                <a class="crumb-name" href="#">订单管理</a>
+                <span class="crumb-step">&gt;</span>
+                <span>我的订单</span>
+            </div>
+        </div>
+        <div class="result-self" >
+            <div class="Bott">
+                <div class="wrapper clearfix">
+
+                    <div class="you fl">
+                        <div class="my clearfix"><h2 class="fl">我的订单</h2><a href="#" class="fl">请谨防钓鱼链接或诈骗电话，了解更多&gt;</a></div>
+                        <div class="dlist clearfix">
+                            <ul class="fl clearfix" id="wa">
+                                <li class="on"><a href="#2">全部订单</a></li>
+                            </ul>
+                            <span th:if="${session.judge}!=null"><input type="hidden" id="id" th:value="${session.judge.getId()}"></span>
+
+                            <form action="#" method="get" class="fr clearfix" th:if="${session.judge}!=null">
+
+                                <input type="text" name="productornum" id="productornum"   placeholder="请输入商品订单号"/>
+                                <input type="button" onclick="subquery()"/>
+                            </form>
+                            <div style="padding-left: 460px;padding-top: 60px"> <font style="color: red">[[${result}]]</font></div>
+                            <!--<p style="position: absolute;top: 190px;left: 750px"> <font style="color: red">[[${result}]]</font></p>-->
+                        </div>
+                        <div class="dkuang" th:each="order:${session.orderList}">
+                            <p class="one">已收货</p>
+                            <div class="word clearfix">
+                                <ul class="fl clearfix">
+                                    <li>
+                                        [[${order.getOrdertime()}]]
+                                    </li>
+                                    <li>
+                                        [[${order.getName()}]]
+                                    </li>
+                                    <li>
+                                        订单号:[[${order.getOrderid()}]]
+                                    </li>
+                                    <li>在线支付</li>
+                                </ul>
+                                <p class="fr">订单金额：<span>[[${order.getSumprice()}]]0</span>元</p>
+
+
+                            </div>
+
+                            <div th:each="cart:${order.getCarts()}" class="shohou clearfix">
+                                <a href="#" class="fl">
+                                    <img th:src="@{/farmer/images/{path}(path=${cart.getProduct_image()})}" />
+                                </a>
+                                <p class="fl">
+                                    <a href="#">[[${cart.getProduct_name()}]] 商品种类[[${cart.getProduct_classification()}]]</a>
+                                    <a href="#">¥[[${cart.getProduct_price()}]]0×[[${cart.getProduct_num()}]]</a>
+                                </p>
+                                <p class="fr">
+                                    <a href="#">订单详情</a>
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="fenye clearfix">
+                            <a href="#"><img th:src="@{~/front/img/zuo.jpg}" /></a><a href="#">1</a>
+                            <a href="#"><img th:src="@{~/front/img/you.jpg}" /></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--/main-->
+</div>
+
+
+<script th:src="@{~/front/js/public.js}" type="text/javascript" charset="utf-8"></script>
+<script th:src="@{~/front/js/jquery-1.12.4.min.js}" type="text/javascript" charset="utf-8"></script>
+<script th:src="@{~/front/js/user.js}" type="text/javascript" charset="utf-8"></script>
+
+
+<script>
+
+
+    function subquery() {
+        var productornum=$("#productornum").val();
+        var id=$("#id").val();
+        if (productornum==""){
+            alert("请输入商品名称或订单编号")
+        }else {
+           /* alert("搜索成功")*/
+            if (productornum.length>=50){
+                alert("很抱歉，订单编号不能超过50个字符");
+            }
+            else {
+                window.location.href="/professor_manage/findOrderByLikeId?productornum="+productornum+"&id="+id;
+            }
+        }
+    }
+
+</script>
+
+
+</body>
+</html>

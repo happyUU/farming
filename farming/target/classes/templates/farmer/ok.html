@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <title>购物车页面</title>
+
+    <link th:href="@{~/farmer/css/zerogrid.css}" rel="stylesheet" media="all" type="text/css">
+    <link th:href="@{~/farmer/css/style.css}" rel="stylesheet" media="all" type="text/css">
+    <link th:href="@{~/farmer/css/menu.css}" rel="stylesheet" media="all" type="text/css">
+    <link th:href="@{~/farmer/css/animate.css}" rel="stylesheet" media="all" type="text/css">
+    <link th:href="@{~/farmer/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{~/farmer/owl-carousel/owl.carousel.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{~/front/css/public.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{~/front/css/proList.css}"/>
+    <style>
+        .container {
+            border-bottom: 1px solid #999;
+        }
+
+        .headerimg {
+            border-radius: 50%;
+            text-align: center;
+            margin-left: 20px;
+        }
+
+        .headerimg img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+
+        .box {
+            display: flex;
+            padding: 20px 0;
+        }
+
+        .name {
+            margin: 0 15px;
+            font-size: 16px;
+            color: #6864C3;
+        }
+
+        .time {
+            float: right;
+            margin: -25px 20px 0 0;
+        }
+
+        .comment {
+            font-size: 16px;
+        }
+    </style>
+
+
+    <script th:src="@{~/farmer/js/html5.js}"></script>
+    <script th:src="@{~/farmer/js/css3-mediaqueries.js}"></script>
+
+
+
+</head>
+<body id="page-top" class="sub-page">
+<div class="wrap-body">
+
+    <header>
+        <div class="wrap-header" >
+            <div class="main-header">
+                <div class="bg-overlay">
+                    <div class="hero-content-wrapper">
+                        <div class="hero-content">
+                            <h4 class="h-alt hero-subheading wow fadeIn" data-wow-duration="2s" data-wow-delay=".7s">购物车列表</h4>
+                            <h1 class="hero-lead wow fadeInLeft" data-wow-duration="1.5s">购物车</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!---Top Menu--->
+            <div id="cssmenu" >
+                <ul>
+                    <li class="has-sub"><a href="#" th:if="${session.judge!=null&&session.judge.getStatus()==1}"><span th:text="${session.judge.getName()}"></span></a>
+                        <ul>
+                            <li><a th:href="@{/farmer_manage/index.html}"><span>个人中心</span></a></li>
+                            <li><a th:href="@{/user/loginout}"><span>退出</span></a></li>
+                        </ul>
+                    </li>
+
+                    <li class="has-sub"><a href="#" th:if="${session.judge!=null&&session.judge.getStatus()==2}"><span th:text="${session.judge.getName()}"></span></a>
+                        <ul>
+                            <li><a th:href="@{/seller_manage/index.html}"><span>个人中心</span></a></li>
+                            <li><a th:href="@{/user/loginout}"><span>退出</span></a></li>
+                        </ul>
+                    </li>
+
+                    <li class="has-sub"><a href="#" th:if="${session.judge!=null&&session.judge.getStatus()==3}"><span th:text="${session.judge.getName()}"></span></a>
+                        <ul>
+                            <li><a th:href="@{/professor_manage/index.html}"><span>个人中心</span></a></li>
+                            <li><a th:href="@{/user/loginout}"><span>退出</span></a></li>
+                        </ul>
+                    </li>
+
+
+                    <li class="has-sub"><a href="#" th:if="${session.judge}==null"><span >游客</span></a>
+                        <ul >
+                            <li><a th:href="@{/user/login}"><span>登入</span></a></li>
+                            <li><a th:href="@{/user/register}"><span>注册</span></a></li>
+                        </ul>
+                    </li>
+                    <li><a th:href="@{/article}"><span>文章</span></a></li>
+                    <li><a th:href="@{/product}"><span>农产品</span></a></li>
+                    <li><a th:href="@{/cart}"><span>购物车</span></a></li>
+                    <li class="last"><a th:href="@{/contact}"><span>联系我们</span></a></li>
+                </ul>
+            </div>
+
+
+
+
+        </div>
+    </header>
+
+
+
+    <section id="page-content">
+        <div class="zerogrid">
+            <div style="height: 10px"></div>
+            <div class="wrap-box"><!--Start Box-->
+
+                <div class="order mt cart">
+                    <div class="site"><p class="wrapper clearfix"><span class="fl">支付成功</span>
+                        <img class="top" th:src="@{~/front/img/temp/cartTop03.png}"></p>
+                    </div>
+                    <p class="ok">支付成功！剩余<span>5</span>秒<a th:href="@{/product.html}">继续购物</a></p></div>
+                <div class="like"><h4>猜你喜欢</h4>
+                    <div class="bottom">
+                        <div class="hd"><span class="prev">
+
+                            <img th:src="@{~/front/img/temp/prev.png}"></span><span class="next">
+
+                            <img th:src="@{~/front/img/temp/next.png}"></span>
+                        </div>
+                        <div class="imgCon wrapper bd">
+                            <div class="likeList clearfix">
+                                <div>
+                                    <a href="#">
+                                    <dl>
+                                        <dt><img th:src="@{~/farmer/images/product/product_1.jpg}"></dt>
+                                        <dd>速生99—生菜种子</dd>
+                                        <dd>￥20.00</dd>
+                                    </dl>
+                                    </a>
+
+                                    <a href="#">
+                                    <dl>
+                                        <dt><img th:src="@{~/farmer/images/product/product_2.jpg}"></dt>
+                                        <dd>红缨子高粱</dd>
+                                        <dd>￥20.00</dd>
+                                    </dl>
+                                    </a>
+
+                                    <a href="#">
+                                    <dl>
+                                        <dt><img th:src="@{~/farmer/images/product/product_3.jpg}"></dt>
+                                        <dd>云南普洱茶</dd>
+                                        <dd>￥10.00</dd>
+                                    </dl>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div style="height: 200px"></div>
+        </div>
+
+
+    </section>
+
+
+
+    <script th:src="@{~/farmer/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{~/farmer/js/menu.js}"></script>
+    <script th:src="@{~/farmer/js/jquery.localScroll.min.js}"></script>
+    <script th:src="@{~/farmer/js/jquery.scrollTo.min.js}"></script>
+    <script th:src="@{~/farmer/js/SmoothScroll.js}"></script>
+    <script th:src="@{~/farmer/js/wow.min.js}"></script>
+    <script th:src="@{~/farmer/js/main.js}"></script>
+    <script th:src="@{~/front/js/jquery-1.12.4.min.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{~/front/js/public.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{~/front/js/pro.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{~/front/js/cart.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{~/front/js/jquery.SuperSlide.2.1.1.js}" type="text/javascript" charset="utf-8"></script>
+
+</div>
+
+<script type="text/javascript">jQuery(".bottom").slide({
+    titCell: ".hd ul",
+    mainCell: ".bd .likeList",
+    autoPage: true,
+    autoPlay: false,
+    effect: "leftLoop",
+    autoPlay: true,
+    vis: 1
+});
+</script>
+
+</body>
+
+</html>

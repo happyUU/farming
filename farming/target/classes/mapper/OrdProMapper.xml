@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crc.farming.dao.OrderDao">
+
+    <resultMap id="BaseResultMap1" type="com.crc.farming.pojo.Ordpro" >
+        <result column="orderid" property="orderid" jdbcType="INTEGER" />
+        <result column="product_id" property="product_id" jdbcType="INTEGER" />
+        <result column="product_num" property="product_num" jdbcType="INTEGER" />
+    </resultMap>
+
+<!--
+    <select id="findOrderId" resultMap="BaseResultMap">
+        select * from `order_product` where orderid= #{orderid,jdbcType=INTEGER}
+
+    </select>-->
+
+
+    <insert id="insertorder_product" parameterType="com.crc.farming.pojo.Ordpro">
+        insert into `order_product`(orderid,product_id,product_num)
+        values(#{orderid},#{product_id}, #{product_num})
+    </insert>
+
+
+    <select id="findUserOrderProduct" resultMap="BaseResultMap1">
+        select * from `order_product` where orderid= #{orderid,jdbcType=INTEGER}
+    </select>
+
+</mapper>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+	<meta charset="utf-8">
+	<title>联系页面</title>
+
+  	<link th:href="@{~/farmer/css/zerogrid.css}" rel="stylesheet" media="all" type="text/css">
+	<link th:href="@{~/farmer/css/style.css}" rel="stylesheet" media="all" type="text/css">
+	<link th:href="@{~/farmer/css/menu.css}" rel="stylesheet" media="all" type="text/css">
+	<link th:href="@{~/farmer/css/animate.css}" rel="stylesheet" media="all" type="text/css">
+	<link th:href="@{~/farmer/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{~/farmer/owl-carousel/owl.carousel.css}" rel="stylesheet">
+
+
+		<script th:src="@{~/farmer/js/html5.js}"></script>
+		<script th:src="@{~/farmer/js/css3-mediaqueries.js}"></script>
+	<script th:src="@{~/farmer/js/jquery-3.1.1.min.js}"></script>
+</head>
+
+<script>
+	function submitleavemessage(name,email,message) {
+		$.ajax({
+			url: "/addleavemessage",
+			type: "POST",
+			data: {
+				"name":name,
+				"email":email,
+				"message": message,
+			},
+			dataType: "json",
+			success: function (data) {
+				if (data==true){
+					alert("您的留言已提交，感谢您的评论，我们会尽快查看处理")
+					window.location.reload();
+				}else {
+					alert("评论失败，请查看您的网络或其他问题")
+				}
+			}
+		})
+	}
+</script>
+
+
+<body id="page-top" class="sub-page">
+<div class="wrap-body">
+
+	<header>
+		<div class="wrap-header" >
+			<div class="main-header">
+				<div class="bg-overlay">
+					<div class="hero-content-wrapper">
+						<div class="hero-content">
+							<h4 class="h-alt hero-subheading wow fadeIn" data-wow-duration="2s" data-wow-delay=".7s">联系我们</h4>
+							<h1 class="hero-lead wow fadeInLeft" data-wow-duration="1.5s">留言</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!---Top Menu--->
+			<div id="cssmenu" >
+				<ul>
+					<li class="has-sub"><a href="#" th:if="${session.judge!=null&&session.judge.getStatus()==1}"><span th:text="${session.judge.getName()}"></span></a>
+						<ul>
+							<li><a th:href="@{/farmer_manage/index.html}"><span>个人中心</span></a></li>
+							<li><a th:href="@{/user/loginout}"><span>退出</span></a></li>
+						</ul>
+					</li>
+
+					<li class="has-sub"><a href="#" th:if="${session.judge!=null&&session.judge.getStatus()==2}"><span th:text="${session.judge.getName()}"></span></a>
+						<ul>
+							<li><a th:href="@{/seller_manage/index.html}"><span>个人中心</span></a></li>
+							<li><a th:href="@{/user/loginout}"><span>退出</span></a></li>
+						</ul>
+					</li>
+
+					<li class="has-sub"><a href="#" th:if="${session.judge!=null&&session.judge.getStatus()==3}"><span th:text="${session.judge.getName()}"></span></a>
+						<ul>
+							<li><a th:href="@{/professor_manage/index.html}"><span>个人中心</span></a></li>
+							<li><a th:href="@{/user/loginout}"><span>退出</span></a></li>
+						</ul>
+					</li>
+
+
+					<li class="has-sub"><a href="#" th:if="${session.judge}==null"><span >游客</span></a>
+						<ul >
+							<li><a th:href="@{/user/login}"><span>登入</span></a></li>
+							<li><a th:href="@{/user/register}"><span>注册</span></a></li>
+						</ul>
+					</li>
+					<li><a th:href="@{/article}"><span>文章</span></a></li>
+					<li><a th:href="@{/product}"><span>农产品</span></a></li>
+					<li><a th:href="@{/cart}"><span>购物车</span></a></li>
+					<li class="last"><a th:href="@{/contact}"><span>联系我们</span></a></li>
+				</ul>
+			</div>
+
+
+
+
+
+		</div>
+	</header>
+
+
+
+	<!--////////////////////////////////////Container-->
+	<section id="page-content">
+		<div class="wrap-container zerogrid">
+			<div class="crumbs">
+				<ul>
+					<li><a href="#">联系</a></li>
+					<li><a href="#">关于我们</a></li>
+				</ul>
+			</div>
+			<div id="contact-area">
+				<h1 class="">联系我们</h1>
+				<div class="contact-map_wrapper wow fadeIn" data-wow-delay=".1s" data-wow-duration="1.5s">
+					<!-- Map -->
+					<div id="map" style="height: 550px;"></div>
+
+					<!-- Show Info Button -->
+					<div class="show-info-link">
+					  <a href="#" class="show-info"><i class="fa fa-info"></i>展示信息</a>
+					</div>
+					<div class="zerogrid">
+						<!-- Address Info -->
+						<div class="xs-5-6 offset-md-1-6 md-1-2 contact-info-wrapper">
+							<address>
+								<div class="row">
+								  <!-- Phone -->
+								  <div class="sm-1-2 address-group">
+									<span>电话</span>
+									<a href="#">+ 10086</a>
+									<a href="#">+ 1008611</a>
+								  </div>
+								  <!-- Address -->
+								  <div class="sm-1-2 address-group">
+									<span>地址</span>
+									<p>天安门</p>
+								  </div>
+								</div>
+								<div class="row">
+								  <!-- Email -->
+								  <div class="sm-1-2 address-group">
+									<span>邮件</span>
+									<a href="mailto:sayhello@email.com">123@outlook.com</a>
+								  </div>
+								  <!-- Hours -->
+								  <div class="sm-1-2 address-group">
+									<span>开放时间</span>
+									<p>周一到周五: 9am-5pm</p>
+									<p>周末: 10am-1pm</p>
+								  </div>
+								</div>
+								<!-- Show Map Button -->
+								<div class="row show-map-link">
+								  <a href="#" class="show-map"><i class="fa fa-map-o"></i> 隐藏</a>
+								</div>
+							</address>
+						</div>
+					</div>
+				</div>
+				<div class="contact-main_wrapper">
+					<div class="row">
+						<div class="sm-2-5 ">
+							<div class="wrap-col">
+								<div class="wow fadeInLeft" data-wow-delay=".1s" data-wow-duration="1s">
+									<h3>有什么问题吗?让我们联系一下!</h3>
+									<p>
+										如果您正在考虑重新设计您的花园，添加一些花园特色或只是想要一些花园维护，请联系我们。
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="sm-2-5 offset-sm-1-5">
+							<div class="wrap-col">
+								<div id="contact_form" class="wow fadeInUp" data-wow-delay=".1s" data-wow-duration="1s">
+									<div id="contact_results"></div>
+									<div id="contact_body">
+										<label>
+											<span th:if="${session.judge}!=null">
+													<input type="text" name="name" id="name" th:value="${session.judge.getName()}" readonly/>
+											</span>
+
+											<span th:if="${session.judge}==null">
+													<input type="text" name="name"  required="true" placeholder="Your Name"/>
+											</span>
+										</label>
+										<label>
+											<span th:if="${session.judge}!=null">
+													<input type="email" name="email" id="email" th:value="${session.judge.getEmail()}" readonly/>
+											</span>
+
+											<span th:if="${session.judge}==null">
+													<input type="email" name="email" required="true" placeholder="Your Email"/>
+											</span>
+										</label>
+										<label>
+											<textarea name="message" id="message" class="textarea-field" required="true" placeholder="Message"></textarea>
+										</label>
+										<label>
+											<span th:if="${session.judge}!=null">
+													<input class="button button-skin" type="button" id="submit_btn1" value="Submit" onclick="submitmessage1()"/>
+
+											</span>
+
+											<span th:if="${session.judge}==null">
+													<input class="button button-skin" type="button" id="submit_btn2" value="Submit" onclick="submitmessage2()"/>
+											</span>
+
+
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!--Footer-->
+	<footer id="page-footer">
+		<div class="zerogrid wrap-footer">
+			<div class="row">
+				<div class="sm-1-4 col-footer-1">
+					<div class="wrap-col">
+						<h3 class="widget-title">关于我们</h3>
+						<p>
+							十年之约，一个人的寂寞，一群人的狂欢。
+							十年看似很长，但是时光总是一眨眼即逝， 给自己一个约定，让自己能回头看青春。
+							十年后，希望变成自己想成为的样子，十年后，望可通过博客回首过往，
+							十年后相遇，再来共叙那年记忆！到来年，暮然回首间，流年清浅，岁月安好！
+							人生能有多少个十年，身边除了家人，又有多少人能陪伴你十年，一辈子很短，
+							能坚持的事不多。我一直觉得，人活下去的动力就是期待，期待明天，期待未来，
+							期待下一个十年，期待以后的生活。上一个十年就这样过去了，
+							下一个十年会是怎样，我很想知道，那就记录下来吧！
+							 许个约定，就十年，听起来也很浪漫！下一个十年，我在未来等你！
+
+
+						</p>
+						<p></p>
+					</div>
+				</div>
+				<div class="sm-1-4 col-footer-2">
+					<div class="wrap-col">
+						<h3 class="widget-title">recently</h3>
+						<ul>
+							<li><a href="#">The most frequently visited pages</a></li>
+							<li><a href="#">5 PLACES THAT MAKE A GREAT HOLIDAY</a></li>
+							<li><a href="#">PEBBLE TIME STEEL IS ON TRACK TO SHIP IN JULY</a></li>
+							<li><a href="#">STARTUP COMPANY???S CO-FOUNDER TALKS ON HIS NEW PRODUCT</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="sm-1-4 col-footer-3">
+					<div class="wrap-col">
+						<h3 class="widget-title">Tag Cloud</h3>
+						<a href="#">animals</a>
+						<a href="#">cooking</a>
+						<a href="#">countries</a>
+						<a href="#">city</a>
+						<a href="#">children</a>
+						<a href="#">home</a>
+						<a href="#">likes</a>
+						<a href="#">photo</a>
+						<a href="#">link</a>
+						<a href="#">law</a>
+						<a href="#">shopping</a>
+						<a href="#">skate</a>
+						<a href="#">scholl</a>
+						<a href="#">video</a>
+						<a href="#">travel</a>
+						<a href="#">images</a>
+						<a href="#">love</a>
+						<a href="#">lists</a>
+						<a href="#">makeup</a>
+						<a href="#">media</a>
+						<a href="#">password</a>
+						<a href="#">pagination</a>
+						<a href="#">wildlife</a>
+					</div>
+				</div>
+				<div class="sm-1-4 col-footer-4">
+					<div class="wrap-col">
+						<h3 class="widget-title">画廊</h3>
+						<div class="row">
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/1.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/2.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/3.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/4.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/5.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/6.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/7.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/8.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/9.jpg}"></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="zerogrid bottom-footer">
+			<div class="row">
+				<div class="bottom-social">
+					<a href="#"><i class="fa fa-facebook"></i></a>
+					<a href="#"><i class="fa fa-instagram"></i></a>
+					<a href="#"><i class="fa fa-twitter"></i></a>
+					<a href="#"><i class="fa fa-google-plus"></i></a>
+					<a href="#"><i class="fa fa-pinterest"></i></a>
+					<a href="#"><i class="fa fa-vimeo"></i></a>
+					<a href="#"><i class="fa fa-linkedin"></i></a>
+					<a href="#"><i class="fa fa-youtube"></i></a>
+				</div>
+			</div>
+			<div class="copyright">
+				@CRC <a href="#" target="_blank">"农产品"</a>网站
+			</div>
+		</div>
+	</footer>
+
+	<script th:src="@{~/farmer/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{~/farmer/js/menu.js}"></script>
+	<script th:src="@{~/farmer/js/jquery.localScroll.min.js}"></script>
+	<script th:src="@{~/farmer/js/jquery.scrollTo.min.js}"></script>
+	<script th:src="@{~/farmer/js/SmoothScroll.js}"></script>
+	<script th:src="@{~/farmer/js/wow.min.js}"></script>
+	<script th:src="@{~/farmer/js/main.js}"></script>
+	
+	
+    
+	<script th:inline="javascript">
+		function submitmessage1(){
+			var message=$("#message").val();
+			if (message==null||message==""){
+				alert("请输入您的评论")
+			}else {
+				if (message.length>=500){
+					alert("很抱歉，留言不能超过500个字符");
+				}else {
+					var name=$("#name").val();
+					var email=$("#email").val();
+					/*alert(name+message+email)*/
+					submitleavemessage(name,email,message);
+				}
+
+			}
+		}
+		function submitmessage2(){
+			alert("请先登入")
+		}
+
+
+
+
+		$(document).ready(function() {
+			$("#submit_btn").click(function() {
+
+				var proceed = true;
+				//simple validation at client's end
+				//loop through each field and we simply change border color to red for invalid fields
+				$("#contact_form input[required=true], #contact_form textarea[required=true]").each(function(){
+					$(this).css('border-color','');
+					if(!$.trim($(this).val())){ //if this field is empty
+						$(this).css('border-color','red'); //change border color to red
+						proceed = false; //set do not proceed flag
+					}
+					//check invalid email
+					var email_reg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+					if($(this).attr("type")=="email" && !email_reg.test($.trim($(this).val()))){
+						$(this).css('border-color','red'); //change border color to red
+						proceed = false; //set do not proceed flag
+					}
+				});
+
+				if(proceed) //everything looks good! proceed...
+				{
+					//get input field values data to be sent to server
+					post_data = {
+						'user_name'		: $('input[name=name]').val(),
+						'user_email'	: $('input[name=email]').val(),
+						'country_code'	: $('input[name=phone1]').val(),
+						'phone_number'	: $('input[name=phone2]').val(),
+						'subject'		: $('select[name=subject]').val(),
+						'msg'			: $('textarea[name=message]').val()
+					};
+
+					//Ajax post data to server
+					$.post('contact.php', post_data, function(response){
+						if(response.type == 'error'){ //load json data from server and output message
+							output = '<div class="error">'+response.text+'</div>';
+						}else{
+							output = '<div class="success">'+response.text+'</div>';
+							//reset values in all input fields
+							$("#contact_form  input[required=true], #contact_form textarea[required=true]").val('');
+							$("#contact_form #contact_body").slideUp(); //hide form after success
+						}
+						$("#contact_form #contact_results").hide().html(output).slideDown();
+					}, 'json');
+				}
+		});
+
+		//reset previously set border colors and hide all message on .keyup()
+		$("#contact_form  input[required=true], #contact_form textarea[required=true]").keyup(function() {
+			$(this).css('border-color','');
+			$("#result").slideUp();
+		});
+		});
+	</script>
+	
+</div>
+</body></html>

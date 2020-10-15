@@ -1,0 +1,261 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>农产品网站</title>
+	<meta charset="utf-8">
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+
+	<link th:href="@{~/farmer/css/login-style.css}" rel='stylesheet' type='text/css' />
+
+	<style>
+		input [type="text"],select {
+			width: 100%;
+			color: #fff;
+			outline: none;
+			font-size: 17px;
+			letter-spacing: 0.5px;
+			padding: 15px;
+			box-sizing: border-box;
+			border: none;
+			-webkit-appearance: none;
+			font-family: 'Amiri', serif;
+			background: rgba(0, 0, 0, 0.53);
+		}
+
+		.input_name{
+			width: 100%;
+			color: #fff;
+			outline: none;
+			font-size: 17px;
+			letter-spacing: 0.5px;
+			padding: 15px;
+			box-sizing: border-box;
+			border: none;
+			-webkit-appearance: none;
+			font-family: 'Amiri', serif;
+			background: rgba(0, 0, 0, 0.53);
+		}
+		a{
+			color: #000000;
+			font-weight: 100;
+			width: 100%;
+			padding: 0.4em 0;
+			font-size: 1em;
+			font-weight: 600;
+			letter-spacing: 2px;
+			cursor: pointer;
+			border: none;
+			outline: none;
+			background: rgba(255, 255, 255, 0.38);
+			font-family: 'Amiri', serif;
+			transition: 0.5s all ease;
+			-webkit-transition: 0.5s all ease;
+			-moz-transition: 0.5s all ease;
+			-o-transition: 0.5s all ease;
+			-ms-transition: 0.5s all ease;
+		}
+		a:hover{
+			color: #fff;
+			box-shadow: 0 20px 5px -10px rgba(0, 0, 0, 0.4);
+			transform: translateY(5px);
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1>注册</h1>
+		<div class="w3ls-login box">
+			<form th:action="@{~/user/addUser}" method="post" onsubmit="return submituser()">
+				<div class="agile-field-txt">
+					<input type="text" name="name" id="inputname" placeholder="请输入用户名"  class="input_name" onblur="checkName()"/>
+					<div  id="inputname_prompt" style="color: red;font-weight: bold;">
+						用户名由英文字母和数字组成的4-16位字符
+					</div>
+				</div>
+
+				<div class="agile-field-txt">
+					<input type="password" id="inputpassword" name="password" placeholder="请输入密码" onblur="checkPassword()"/>
+					<div  id="inputpassword_prompt" style="color: red;font-weight: bold;">
+						密码由英文字母和数字组成的6-12位字符
+					</div>
+				</div>
+
+				<div class="agile-field-txt">
+					<input type="text" id="inputtel" name="telephone" placeholder="请输入手机号"onblur="checkTel()">
+					<div  id="inputtel_prompt" style="color: red;font-weight: bold;">
+						11个字符
+					</div>
+				</div>
+
+				<div class="agile-field-txt">
+					<input type="text" id="inputemail" name="email" placeholder="请输入邮箱"onblur="checkEmail()">
+					<div  id="inputemail_prompt" style="color: red;font-weight: bold;">
+						邮箱格式，例如：123@outlook.con
+					</div>
+				</div>
+
+				<div class="agile-field-txt">
+					<input type="text" id="inputaddress" name="address" placeholder="请输入地址"onblur="checkAddress()">
+					<div  id="inputaddress_prompt" style="color: red;font-weight: bold;">
+						地址格式，如：北京市朝阳区
+					</div>
+				</div>
+
+				<select id="country" name = "status" class="agile-field-txt" >
+					<option value="1" selected>农民</option>
+					<option value="2">卖家</option>
+					<option value="3">专家</option>
+				</select>
+				<div class="w3ls-bot">
+					<input type="submit"  value="注册">
+				</div>
+			</form>
+			<a th:href="@{~/user/login}" style="width: 26%">登入</a>
+			<p th:text="${result}" style="font-size: 20px;font-weight: bold;color: white"></p>
+		</div>
+
+
+		<div class="copy-wthree">
+			<p>农产品网站 @crc
+			</p>
+		</div>
+
+	<script th:src="@{~/farmer/js/particles.min.js}"></script>
+	<script th:src="@{~/farmer/js/index.js}"></script>
+	<script th:src="@{~/farmer/js/jquery-3.1.1.min.js}"></script>
+</body>
+<script>
+	function checkName(){
+
+		var my= document.getElementById ("inputname");
+		var divID= document.getElementById ("inputname_prompt");
+		divID.innerHTML="";
+		var name = $("#inputname").val();
+		var reg=/^[a-zA-Z0-9]{3,15}$/;
+		if (name==""){
+			divID.innerHTML = "用户名名不能为空";
+			return false;
+		}else{
+			if (reg.test(name) == false) {
+				divID.innerHTML = "用户名格式不正确";
+				return false;
+			}
+		}
+
+		return true;
+	}
+	function checkPassword(){
+
+		var my= document.getElementById ("inputpassword");
+		var divID= document.getElementById ("inputpassword_prompt");
+		divID.innerHTML="";
+		var password=$("#inputpassword").val();
+		var reg=/^[a-zA-Z0-9]{5,11}$/;
+		if (password==""){
+			divID.innerHTML = "密码不能为空";
+			return false;
+		}else{
+			if(reg.test(password)==false){
+				divID.innerHTML="密码格式不正确";
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	function checkTel(){
+
+		var my= document.getElementById ("inputtel");
+		var divID= document.getElementById ("inputtel_prompt");
+		divID.innerHTML="";
+		var tel = $("#inputtel").val();
+		var reg = /^1\d{10}$/;
+		if (tel==""){
+			divID.innerHTML = "电话号码不能为空";
+			return false;
+		}else{
+			if (reg.test(tel) == false) {
+				divID.innerHTML = "电话号码格式不正确";
+				return false;
+			}
+		}
+
+		return true;
+	}
+	function checkEmail(){
+
+		var my= document.getElementById ("inputemail");
+		var divID= document.getElementById ("inputemail_prompt");
+		divID.innerHTML="";
+		var email = $("#inputemail").val();
+		var reg = /^\w+@\w+(\.[a-zA-Z]{2,3}){1,2}$/;
+		if (email==""){
+			divID.innerHTML = "邮箱不能为空";
+			return false;
+		}else{
+			if (reg.test(email) == false) {
+				divID.innerHTML = "邮箱格式不正确";
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	function checkAddress(){
+
+		var my= document.getElementById ("inputaddress");
+		var divID= document.getElementById ("inputaddress_prompt");
+		divID.innerHTML="";
+		var address = $("#inputaddress").val();
+
+		if (address==""){
+			divID.innerHTML = "地址不能为空";
+			return false;
+		}else {
+
+			return true;
+		}
+
+	}
+
+	function checkAll(){
+		var a=checkName();
+		var b=checkTel();
+		var c=checkPassword();
+		var d=checkEmail();
+		var e=checkAddress();
+		return a&&b&&c&&d;
+	}
+
+	function submituser(){
+		if (checkAll()==true){
+			var name=$("#inputname").val();
+			var tel = $("#inputtel").val();
+			var email = $("#inputemail").val();
+			var address = $("#inputaddress").val();
+			var passwword=$("#inputpassword").val();
+			var status=$("#country").val();
+			console.log(name+"----"+email+"----"+passwword+"----"+address+"----"+tel+"---"+status);
+			return true;
+		}else {
+			alert("提交失败");
+			return false;
+		}
+	}
+
+
+
+</script>
+</html>

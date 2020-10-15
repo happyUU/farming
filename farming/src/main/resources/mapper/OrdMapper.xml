@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crc.farming.dao.OrderDao">
+
+    <resultMap id="BaseResultMap3" type="com.crc.farming.pojo.Ord" >
+        <id column="orderid" property="orderid" />
+        <result column="id" property="id"  />
+        <result column="ordertime" property="ordertime" jdbcType="DATE" />
+    </resultMap>
+
+
+    <select id="findOrderId" resultMap="BaseResultMap3">
+        select * from `order` where orderid= #{orderid}
+        <!--<include refid="Base_Column_List" />-->
+    </select>
+
+
+    <select id="findOrderByLikeId" resultMap="BaseResultMap3">
+        select * from `order` where orderid LIKE '%${orderid}%' AND id= #{id}
+        <!--<include refid="Base_Column_List" />-->
+    </select>
+
+
+    <insert id="insertorder" parameterType="com.crc.farming.pojo.Ord">
+        insert into `order`(orderid,id,ordertime)
+        values(#{orderid},#{id},  #{ordertime,jdbcType=DATE})
+    </insert>
+
+    <select id="findUserOrder" resultMap="BaseResultMap3">
+        select * from `order` where id= #{id}
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/main.css}"/>
+</head>
+<body>
+<div class="topbar-wrap white" th:fragment="head">
+    <div class="topbar-inner clearfix">
+        <div class="topbar-logo-wrap clearfix">
+            <h1 class="topbar-logo none"><a href="index.html" class="navbar-brand">个人中心</a></h1>
+            <ul class="navbar-list clearfix">
+                <li><a class="on" th:href="@{~/farmer_manage/index.html}">首页</a></li>
+                <li><a th:href="@{~/article.html}" target="_blank">网站首页</a></li>
+            </ul>
+        </div>
+        <div class="top-info-wrap">
+            <ul class="top-info-list clearfix">
+                <li class="has-sub" th:if="${session.judge}!=null">
+                    <a href="#" >
+                        <span >
+                           欢迎您： [[${session.judge.getName()}]]
+                        </span>
+                    </a>
+                    <ul>
+                        <li><a th:href="@{/user/loginout}"><span>退出</span></a></li>
+                    </ul>
+                </li>
+                <li class="has-sub" th:if="${session.judge}==null">
+                    <a href="#" >
+                        <span >个人中心</span>
+                    </a>
+                </li>
+
+                <li th:if="${session.judge}==null"><a th:href="@{/user/login}"><span>登入</span></a></li>
+
+                <li><a th:href="@{/user/loginout}">退出</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

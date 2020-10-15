@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crc.farming.dao.ArticleDao">
+
+    <resultMap id="BaseResultMap" type="com.crc.farming.pojo.Article" >
+        <id column="articleid" property="articleid" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="date" property="date" jdbcType="DATE" />
+        <result column="visitnum" property="visitnum" jdbcType="INTEGER" />
+        <result column="source" property="source" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="picture" property="picture" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        articleid, title,date, source, content,id,picture
+    </sql>
+
+    <insert id="addArticle" parameterType="Article" >
+        insert into article(title,date, source, content,id,picture)
+        values(#{title},  #{date},#{source},#{content},#{id},  #{picture})
+    </insert>
+
+
+    <select id="queryAllArticle" resultMap="BaseResultMap">
+        select * from article ;
+    </select>
+
+    <select id="sortArticleByNum" resultMap="BaseResultMap">
+        SELECT * FROM `article` ORDER BY `visitnum` DESC
+    </select>
+
+    <select id="sortArticleByDate" resultMap="BaseResultMap">
+        SELECT * FROM `article` ORDER BY `date` DESC
+    </select>
+
+    <select id="queryOneArticle" resultMap="BaseResultMap">
+        select * from article where articleid = #{articleid,jdbcType=INTEGER}
+    </select>
+
+    <select id="findArticleByKeyWord" resultMap="BaseResultMap">
+        SELECT * FROM article WHERE title LIKE '%${articleid,jdbcType=INTEGER}%'
+    </select>
+
+    <update id="updateVisitNum"  >
+        update article set visitnum = visitnum+1 where articleid = #{articleid,jdbcType=INTEGER}
+    </update>
+
+
+</mapper>

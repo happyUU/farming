@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/main.css}"/>
+</head>
+<body>
+<div class="sidebar-wrap" th:fragment="left">
+    <div class="sidebar-title">
+        <h1>菜单</h1>
+    </div>
+    <div class="sidebar-content">
+        <ul class="sidebar-list">
+            <li>
+                <a href="#"><i class="icon-font">&#xe003;</i>常用操作</a>
+                <ul class="sub-menu">
+
+                    <li th:if="${session.judge}==null">
+                        <a th:href="@{/farmer_manage/nomyorderq}">
+                            <i class="icon-font">&#xe005;</i>我的订单</a>
+                    </li>
+
+                    <li th:if="${session.judge}!=null">
+                        <a th:href="@{/farmer_manage/myorderq(id=${session.judge.getId()})}">
+                            <i class="icon-font">&#xe005;</i>我的订单</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="icon-font">&#xe018;</i>信息管理</a>
+                <ul class="sub-menu">
+                    <li><a th:href="@{~/farmer_manage/system.html}"><i class="icon-font">&#xe017;</i>信息设置</a></li>
+
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

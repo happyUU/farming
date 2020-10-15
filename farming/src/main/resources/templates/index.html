@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>萌芽</title>
+
+    <meta charset="utf-8">
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+
+
+    <link th:href="@{~/farmer/css/login-style.css}" rel='stylesheet' type='text/css' />
+
+    <style>
+        .input_name{
+            width: 100%;
+            color: #fff;
+            outline: none;
+            font-size: 17px;
+            letter-spacing: 0.5px;
+            padding: 15px;
+            box-sizing: border-box;
+            border: none;
+            -webkit-appearance: none;
+            font-family: 'Amiri', serif;
+            background: rgba(0, 0, 0, 0.53);
+        }
+        a{
+            color: #000000;
+            font-weight: 100;
+            width: 100%;
+            padding: 0.4em 0;
+            font-size: 1em;
+            font-weight: 600;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            background: rgba(255, 255, 255, 0.38);
+            font-family: 'Amiri', serif;
+            transition: 0.5s all ease;
+            -webkit-transition: 0.5s all ease;
+            -moz-transition: 0.5s all ease;
+            -o-transition: 0.5s all ease;
+            -ms-transition: 0.5s all ease;
+        }
+        a:hover{
+            color: #fff;
+            box-shadow: 0 20px 5px -10px rgba(0, 0, 0, 0.4);
+            transform: translateY(5px);
+        }
+    </style>
+
+</head>
+
+<body>
+<div id="particles-js"></div>
+<div class="w3ls-pos">
+    <h1>登入</h1>
+    <div class="w3ls-login box">
+        <form th:action="@{~/user/logincheck}" method="post">
+            <div class="agile-field-txt">
+                <input type="text" name="name" id="name" placeholder="请输入用户名" required="" class="input_name"/>
+            </div>
+            <div class="agile-field-txt">
+                <input type="password" name="password" id="password" placeholder="请输入密码" required=""  />
+            </div>
+
+            <div class="w3ls-bot">
+                <input type="submit"  value="登入">
+            </div>
+        </form>
+        <a th:href="@{~/user/register}" style="width: 60%">注册</a>
+        <p th:text="${error}" style="font-size: 20px;font-weight: bold;color: white"></p>
+    </div>
+
+    <div class="copy-wthree">
+        <p>农产品网站 @crc
+        </p>
+    </div>
+</div>
+
+<script th:src="@{~/farmer/js/particles.min.js}"></script>
+<script th:src="@{~/farmer/js/index.js}"></script>
+<script th:src="@{~/farmer/js/jquery-3.1.1.min.js}"></script>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crc.farming.dao.ProductDao">
+
+    <resultMap id="BaseResultMap2" type="com.crc.farming.pojo.Product" >
+        <id column="product_id" property="product_id" jdbcType="INTEGER" />
+        <result column="product_name" property="product_name" jdbcType="VARCHAR" />
+        <result column="product_price" property="product_price" jdbcType="DOUBLE" />
+        <result column="product_stock" property="product_stock" jdbcType="INTEGER" />
+        <result column="product_status" property="product_status" jdbcType="INTEGER" />
+        <result column="product_classification" property="product_classification" jdbcType="VARCHAR" />
+        <result column="product_place" property="product_place" jdbcType="VARCHAR" />
+        <result column="product_description" property="product_description" jdbcType="VARCHAR" />
+        <result column="product_image" property="product_image" jdbcType="VARCHAR" />
+        <result column="id" property="id" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        product_id, product_name,product_price, product_stock, product_status,product_classification,product_place,product_description,product_image,id
+    </sql>
+
+
+    <select id="queryAllProduct" resultMap="BaseResultMap2">
+        select * from product ;
+    </select>
+
+    <select id="queryProductById" resultMap="BaseResultMap2">
+        select * from product where product_id = #{product_id,jdbcType=INTEGER};
+    </select>
+
+
+    <insert id="addProduct" parameterType="Product" >
+        insert into product(product_name,product_price, product_stock, product_classification,product_place,product_description,product_image,id)
+        values(#{product_name},  #{product_price},#{product_stock},#{product_classification},#{product_place},  #{product_description},#{product_image},#{id})
+    </insert>
+
+
+</mapper>

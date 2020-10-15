@@ -1,0 +1,98 @@
+<!doctype html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>个人中心</title>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{~/farmer_manage/css/main.css}"/>
+    <script type="text/javascript" th:src="@{~/farmer_manage/js/jquery-3.4.1.js}"></script>
+
+    <link th:href="@{~/farmer/css/myself.css}" rel='stylesheet' type='text/css' />
+</head>
+
+<body>
+<div th:replace="~{seller_manage/common/head :: head}"></div>
+<div class="container clearfix">
+    <div th:replace="~{seller_manage/common/left :: left}"></div>
+    <!--/sidebar-->
+    <div class="main-wrap">
+        <div class="crumb-wrap">
+            <div class="crumb-list"><i class="icon-font">&#xe06b;</i><span>欢迎来到个人中心。</span></div>
+        </div>
+        <div class="result-self" >
+            <div class="result-wrap">
+                <div class="result-title">
+                    <h1>快捷操作</h1>
+                </div>
+
+                <div class="result-content">
+                    <div class="short-wrap" th:if="${session.judge}==null">
+                        <ath:href="@{~/seller_manage/insert.html}" style="color:#000;">
+                            <i class="icon-font">&#xe01b;</i>
+                            发布产品
+                        </a>
+                        <a th:href="@{/seller_manage/nomyorderq}" style="color:#000;">
+                            <i class="icon-font">&#xe001;</i>
+                            我的订单
+                        </a>
+                        <a th:href="@{~/seller_manage/system.html}" style="color:#000;">
+                            <i class="icon-font">&#xe01e;</i>
+                            信息设置
+                        </a>
+                    </div>
+
+                    <div class="short-wrap" th:if="${session.judge}!=null">
+                        <a th:href="@{~/seller_manage/insert.html}" style="color:#000;">
+                            <i class="icon-font">&#xe01b;</i>
+                            发布产品
+                        </a>
+                        <a th:href="@{/seller_manage/myorderq(id=${session.judge.getId()})}" style="color:#000;">
+                            <i class="icon-font">&#xe001;</i>
+                            我的订单
+                        </a>
+                        <a th:href="@{~/seller_manage/system.html}" style="color:#000;">
+                            <i class="icon-font">&#xe01e;</i>
+                            信息设置
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="result-wrap">
+                <div class="result-title">
+                    <h1>农产品网站介绍基本信息</h1>
+                </div>
+                <div class="result-content">
+                    <ul class="sys-info-list">
+                        <li>
+                            <label >操作系统</label><span class="res-info">WIN10</span>
+                        </li>
+                        <li>
+                            <label >运行环境</label><span class="res-info">Apache/8.5.47 (Win64) </span>
+                        </li>
+                        <li>
+                            <label >上传附件限制</label><span class="res-info">2M</span>
+                        </li>
+                        <li>
+                            <label >Host</label><span class="res-info">127.0.0.1</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="result-content" style="font-size: 18px;color: black">
+                    <br/>
+                    <p>本网站仅用户学习使用。下面请欣赏一篇诗：</p>
+                    <br/>
+                    <p>码者</p>
+                    <p>零一生是非，</p>
+                    <p>多态意指谁。</p>
+                    <p>日夜皆假寐，</p>
+                    <p>循环几多回。</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/main-->
+</div>
+</body>
+</html>

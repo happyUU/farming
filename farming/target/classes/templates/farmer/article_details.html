@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+	<meta charset="utf-8">
+	<title>文章详情页面</title>
+
+	<link th:href="@{~/farmer/css/zerogrid.css}" rel="stylesheet" media="all" type="text/css">
+	<link th:href="@{~/farmer/css/style.css}" rel="stylesheet" media="all" type="text/css">
+	<link th:href="@{~/farmer/css/menu.css}" rel="stylesheet" media="all" type="text/css">
+	<link th:href="@{~/farmer/css/animate.css}" rel="stylesheet" media="all" type="text/css">
+	<link th:href="@{~/farmer/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{~/farmer/owl-carousel/owl.carousel.css}" rel="stylesheet">
+	<style>
+		.container {
+			border-bottom: 1px solid #999;
+		}
+
+		.headerimg {
+			border-radius: 50%;
+			text-align: center;
+			margin-left: 20px;
+		}
+
+		.headerimg img {
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			vertical-align: middle;
+		}
+
+		.box {
+			display: flex;
+			padding: 20px 0;
+		}
+
+		.name {
+			margin: 0 15px;
+			font-size: 16px;
+			color: #6864C3;
+		}
+
+		.time {
+			float: right;
+			margin: -25px 20px 0 0;
+		}
+
+		.comment {
+			font-size: 16px;
+		}
+	</style>
+
+
+	<script th:src="@{~/farmer/js/html5.js}"></script>
+	<script th:src="@{~/farmer/js/css3-mediaqueries.js}"></script>
+
+<script>
+	function submitcomment(articleid,message,name) {
+		$.ajax({
+			url: "/addcomment",
+			type: "POST",
+			data: {
+				"articleid":articleid,
+				"message": message,
+				"name":name
+			},
+			dataType: "json",
+			success: function (data) {
+				if (data==true){
+					alert("感谢您的评论")
+					window.location.reload();
+				}else {
+					alert("评论失败，请查看您的网络或其他问题")
+				}
+			}
+		})
+	}
+</script>
+
+
+</head>
+<body id="page-top" class="sub-page">
+<div class="wrap-body">
+
+	<header>
+		<div class="wrap-header" >
+			<div class="main-header">
+				<div class="bg-overlay">
+					<div class="hero-content-wrapper">
+						<div class="hero-content">
+							<h4 class="h-alt hero-subheading wow fadeIn" data-wow-duration="2s" data-wow-delay=".7s">文章详情</h4>
+							<h1 class="hero-lead wow fadeInLeft" data-wow-duration="1.5s">文章</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div id="cssmenu" >
+				<ul>
+					<li class="has-sub"><a href="#" th:if="${session.judge!=null&&session.judge.getStatus()==1}"><span th:text="${session.judge.getName()}"></span></a>
+						<ul>
+							<li><a th:href="@{/farmer_manage/index.html}"><span>个人中心</span></a></li>
+							<li><a th:href="@{/user/loginout}"><span>退出</span></a></li>
+						</ul>
+					</li>
+
+					<li class="has-sub"><a href="#" th:if="${session.judge!=null&&session.judge.getStatus()==2}"><span th:text="${session.judge.getName()}"></span></a>
+						<ul>
+							<li><a th:href="@{/seller_manage/index.html}"><span>个人中心</span></a></li>
+							<li><a th:href="@{/user/loginout}"><span>退出</span></a></li>
+						</ul>
+					</li>
+
+					<li class="has-sub"><a href="#" th:if="${session.judge!=null&&session.judge.getStatus()==3}"><span th:text="${session.judge.getName()}"></span></a>
+						<ul>
+							<li><a th:href="@{/professor_manage/index.html}"><span>个人中心</span></a></li>
+							<li><a th:href="@{/user/loginout}"><span>退出</span></a></li>
+						</ul>
+					</li>
+
+
+					<li class="has-sub"><a href="#" th:if="${session.judge}==null"><span >游客</span></a>
+						<ul >
+							<li><a th:href="@{/user/login}"><span>登入</span></a></li>
+							<li><a th:href="@{/user/register}"><span>注册</span></a></li>
+						</ul>
+					</li>
+					<li><a th:href="@{/article}"><span>文章</span></a></li>
+					<li><a th:href="@{/product}"><span>农产品</span></a></li>
+					<li><a th:href="@{/cart}"><span>购物车</span></a></li>
+					<li class="last"><a th:href="@{/contact}"><span>联系我们</span></a></li>
+				</ul>
+			</div>
+
+
+
+		</div>
+	</header>
+
+
+	<section id="page-content">
+		<div class="wrap-container zerogrid">
+			<input th:value="${article.getArticleid()}" id="getArticleid" type="hidden">
+			<div class="crumbs">
+				<ul>
+					<li><a href="#">文章</a></li>
+					<li><a href="#">文章详情</a></li>
+				</ul>
+			</div>
+
+			<div id="about-us">
+				<article class="post-entry single-post">
+					<div class="wrap-post">
+						<div class="entry-header">
+							<h1 class="entry-title">[[${article.getTitle()}]]</h1>
+							<div class="entry-meta">
+								<a href="#"><i class="fa fa-calendar"></i>[[${article.getDate()}]]</a>
+								<a href="#"><i class="fa fa-comments"></i> [[${article.getVisitnum()}]] 观看</a>
+								<a href="#"><i class="fa fa-tag"></i> [[${article.getSource()}]]</a>
+							</div>
+						</div>
+						<div class="post-thumbnail-wrap">
+							<img th:src="@{/farmer/images/{path}(path=${article.getPicture()})}" />
+						</div>
+						<div class="entry-content">
+							<div class="excerpt">
+								[[${article.getContent()}]]
+
+							</div>
+
+						</div>
+					</div>
+				</article>
+
+
+				<p >共[[${count}]]条评论</p>
+				<div th:each="comment:${comments}" class="container">
+
+					<div class="box">
+						<div class="headerimg"><img th:src="@{${comment.getHead_image()}}" alt=""></div>
+						<div th:text="${comment.getName()} " class="name"></div>
+						<div class="comment ">[[${comment.getComment()}]]</div>
+					</div>
+					<div class="time" th:text="${comment.getComment_date()}"></div>
+				</div>
+
+
+
+
+				<div class="zerogrid">
+					<div class="comments-are">
+						<div id="comment">
+							<h3>请评论</h3>
+							<span>您的用户名将不会被公布。关键字段将被标记 </span>
+							<!--<form name="form1" id="comment_form" method="post" action="" >-->
+								<label>
+									<span>评论:</span>
+									<span id="message_prompt" style="color: red;margin-left: 10px"></span>
+
+									<textarea name="message" id="message"></textarea>
+								</label>
+
+								<span th:if="${session.judge}!=null">
+									<center>
+										<input class="button button-skin " type="button" id="SubmitComment1" value="Submit" onclick="submitcheck1()">
+									</center>
+
+								</span>
+
+								<span th:if="${session.judge}==null">
+									<center>
+										<input class="button button-skin " type="submit" id="SubmitComment2" value="Submit" onclick="submitcheck2()">
+									</center>
+								</span>
+							<!--</form>-->
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+
+		</div>
+
+	</section>
+
+	<!--Footer-->
+	<footer id="page-footer">
+		<div class="zerogrid wrap-footer">
+			<div class="row">
+				<div class="sm-1-4 col-footer-1">
+					<div class="wrap-col">
+						<h3 class="widget-title">关于我们</h3>
+						<p>
+							十年之约，一个人的寂寞，一群人的狂欢。
+							十年看似很长，但是时光总是一眨眼即逝， 给自己一个约定，让自己能回头看青春。
+							十年后，希望变成自己想成为的样子，十年后，望可通过博客回首过往，
+							十年后相遇，再来共叙那年记忆！到来年，暮然回首间，流年清浅，岁月安好！
+							人生能有多少个十年，身边除了家人，又有多少人能陪伴你十年，一辈子很短，
+							能坚持的事不多。我一直觉得，人活下去的动力就是期待，期待明天，期待未来，
+							期待下一个十年，期待以后的生活。上一个十年就这样过去了，
+							下一个十年会是怎样，我很想知道，那就记录下来吧！
+							 许个约定，就十年，听起来也很浪漫！下一个十年，我在未来等你！
+
+
+						</p>
+						<p></p>
+					</div>
+				</div>
+				<div class="sm-1-4 col-footer-2">
+					<div class="wrap-col">
+						<h3 class="widget-title">recently</h3>
+						<ul>
+							<li><a href="#">The most frequently visited pages</a></li>
+							<li><a href="#">5 PLACES THAT MAKE A GREAT HOLIDAY</a></li>
+							<li><a href="#">PEBBLE TIME STEEL IS ON TRACK TO SHIP IN JULY</a></li>
+							<li><a href="#">STARTUP COMPANY???S CO-FOUNDER TALKS ON HIS NEW PRODUCT</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="sm-1-4 col-footer-3">
+					<div class="wrap-col">
+						<h3 class="widget-title">Tag Cloud</h3>
+						<a href="#">animals</a>
+						<a href="#">cooking</a>
+						<a href="#">countries</a>
+						<a href="#">city</a>
+						<a href="#">children</a>
+						<a href="#">home</a>
+						<a href="#">likes</a>
+						<a href="#">photo</a>
+						<a href="#">link</a>
+						<a href="#">law</a>
+						<a href="#">shopping</a>
+						<a href="#">skate</a>
+						<a href="#">scholl</a>
+						<a href="#">video</a>
+						<a href="#">travel</a>
+						<a href="#">images</a>
+						<a href="#">love</a>
+						<a href="#">lists</a>
+						<a href="#">makeup</a>
+						<a href="#">media</a>
+						<a href="#">password</a>
+						<a href="#">pagination</a>
+						<a href="#">wildlife</a>
+					</div>
+				</div>
+				<div class="sm-1-4 col-footer-4">
+					<div class="wrap-col">
+						<h3 class="widget-title">画廊</h3>
+						<div class="row">
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/1.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/2.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/3.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/4.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/5.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/6.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/7.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/8.jpg}"></a>
+								</div>
+							</div>
+							<div class="sm-1-3 xs-1-2">
+								<div class="wrap-col">
+									<a href="#"><img th:src="@{/farmer/images/9.jpg}"></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="zerogrid bottom-footer">
+			<div class="row">
+				<div class="bottom-social">
+					<a href="#"><i class="fa fa-facebook"></i></a>
+					<a href="#"><i class="fa fa-instagram"></i></a>
+					<a href="#"><i class="fa fa-twitter"></i></a>
+					<a href="#"><i class="fa fa-google-plus"></i></a>
+					<a href="#"><i class="fa fa-pinterest"></i></a>
+					<a href="#"><i class="fa fa-vimeo"></i></a>
+					<a href="#"><i class="fa fa-linkedin"></i></a>
+					<a href="#"><i class="fa fa-youtube"></i></a>
+				</div>
+			</div>
+			<div class="copyright">
+				@CRC <a href="#" target="_blank">"农产品"</a>网站
+			</div>
+		</div>
+	</footer>
+
+
+
+	<script th:src="@{~/farmer/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{~/farmer/js/menu.js}"></script>
+	<script th:src="@{~/farmer/js/jquery.localScroll.min.js}"></script>
+	<script th:src="@{~/farmer/js/jquery.scrollTo.min.js}"></script>
+	<script th:src="@{~/farmer/js/SmoothScroll.js}"></script>
+	<script th:src="@{~/farmer/js/wow.min.js}"></script>
+	<script th:src="@{~/farmer/js/main.js}"></script>
+	
+</div>
+<script th:inline="javascript">
+
+	function submitcheck1(){
+		var message=$("#message").val();
+		if (message==null||message==""){
+			alert("请输入您的评论")
+		}else {
+			if (message.length>=200){
+				alert("很抱歉，评论不能超过200个字符");
+			}else {
+				var name = $("#getUserName").text();
+				var articleid=$("#getArticleid").val();
+				/*alert(articleid+message+name)*/
+				submitcomment(articleid,message,name);
+			}
+
+		}
+	}
+	function submitcheck2(){
+		alert("请先登入")
+	}
+</script>
+
+
+
+</body>
+
+</html>
